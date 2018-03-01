@@ -1,0 +1,391 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="wbTemplate" this:wbTemplate.in_wbLevel="-1" this:wbTemplate.in_ChildAudit="[New system.Collections.Generic.List(of system.Collections.Generic.Dictionary(of string, object))]" this:wbTemplate.in_wbFinalExec="True" this:wbTemplate.in_wbExceptionType="[string.Empty]" this:wbTemplate.in_wbHandleError="Rethrow"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:this="clr-namespace:"
+ xmlns:ui="http://schemas.uipath.com/workflow/activities"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_wbType" Type="InArgument(x:String)" />
+    <x:Property Name="in_wbLevel" Type="InArgument(x:Int32)" />
+    <x:Property Name="in_wbParent" Type="InArgument(x:String)" />
+    <x:Property Name="in_LogLevel" Type="InArgument(x:String)" />
+    <x:Property Name="in_LogMessage" Type="InArgument(x:String)" />
+    <x:Property Name="in_wbStart" Type="InArgument(s:DateTime)" />
+    <x:Property Name="in_ChildAudit" Type="InArgument(scg:List(scg:Dictionary(x:String, x:Object)))" />
+    <x:Property Name="io_ParentAudit" Type="InOutArgument(scg:List(scg:Dictionary(x:String, x:Object)))" />
+    <x:Property Name="in_SuppressLogging" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_wbStatusSuccessful" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_wbFinalExec" Type="InArgument(x:Boolean)" />
+    <x:Property Name="in_wbExceptionType" Type="InArgument(x:String)" />
+    <x:Property Name="in_wbParentStart" Type="InArgument(s:DateTime)" />
+    <x:Property Name="in_wbHandleError" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap2010:WorkflowViewState.IdRef>wbTemplate_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>System.Xml.Serialization</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>UiPath.Core</AssemblyReference>
+      <AssemblyReference>UiPath.Core.Activities</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualStudio.Services.Common</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="The workflow logs the outcome of the execution of a workblock. The in_LogMessage is logged with a severity corresponding to the value of in_LogLevel. Thus, in_LogLevel can take the following values corresponding to the following severities:&#xA;Trace&#xA;Info &#xA;Warning&#xA;Error&#xA;Fatal&#xA;Be sure to not pass a value other than the one above in_LogLevel, as this will cause logging to be skipped. If you do not pass any value, the logging will be done at &quot;Info&quot; level. &#xA;&#xA;The following log fields are added:&#xA;Add Hierarchy Log Fields: &#xA; + wbType - Name of Current Workblock&#xA; + wbParent - Name of Parent Workblock&#xA; + wbLevel - Level of current workblock (typically level of Parent Workblock + 1)&#xA;&#xA;Add Execution Log Fields: &#xA; + wbStart - the timestamp of the start of execution&#xA; + wbDurationSec - duration of execution in seconds&#xA; + wbDurationHrs - duration of execution in hours&#xA; + wbStatus - If the current workblock is successful and all child workblocks are also successful then set &quot;Successful&quot;, If the current workblock is successful and some child workblocks have failed then set &quot;Finished with Exceptions&quot;, if currect workblock failed then &quot;Failed&quot;, else &quot;SoftFailed&quot;&#xA; + wbFinalExec - If the current workblock is successful or is at the last attempt and all parents are at the last attempt, wbFinalExec is true, else it is false&#xA; + wbParentStart - &#xA; + wbHandleError - If the wb is logging in it's Catch section, it can be instructed by it's parent, through the wbHandleError flag, to &quot;Rethrow&quot; the exception, to &quot;Failed&quot; or to &quot;SoftFail&quot;. Both &quot;Failed&quot; and &quot;SoftFail&quot; instructions mean do not rethrow. The difference between the two is &quot;SoftFail&quot; does not cause the parent to have a status of &quot;Finished with Exceptions&quot;. Thus, the parent can try to solve the child's problem in another manner that could be successful." DisplayName="wbLogging" sap2010:WorkflowViewState.IdRef="Sequence_9">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:Object)" Default="[New system.Collections.Generic.Dictionary(Of String, Object) From &#xA;{ &#xA;{&quot;wbType&quot;, in_wbType},&#xA;{&quot;wbParent&quot;, in_wbParent},&#xA;{&quot;wbParentStart&quot;, in_wbParentStart},&#xA;{&quot;wbLevel&quot;, in_wbLevel},&#xA;{&quot;wbStatus&quot;, &quot;tbd&quot;},&#xA;{&quot;wbExceptionType&quot;, in_wbExceptionType},&#xA;{&quot;wbFinalExec&quot;, in_wbFinalExec},&#xA;{&quot;wbStart&quot;, in_wbStart},&#xA;{&quot;wbDurationSec&quot;, 0},&#xA;{&quot;wbDurationHrs&quot;, 0},&#xA;{&quot;wbHandleError&quot;, in_wbHandleError},&#xA;{&quot;message&quot;, in_LogMessage},&#xA;{&quot;level&quot;, in_LogLevel},&#xA;{&quot;configError&quot;, &quot;tbd&quot;},&#xA;{&quot;optionalInfo&quot;, &quot;tbd&quot;}&#xA;}]" Name="wbAudit" />
+      <Variable x:TypeArguments="x:Boolean" Name="wbIsLeaf" />
+    </Sequence.Variables>
+    <If Condition="[io_ParentAudit is Nothing]" DisplayName="If parent audit is Nothing, create" sap2010:WorkflowViewState.IdRef="If_11">
+      <If.Then>
+        <Assign DisplayName="Init Parent Audit" sap2010:WorkflowViewState.IdRef="Assign_40">
+          <Assign.To>
+            <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[io_ParentAudit]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[New system.Collections.Generic.List(of system.Collections.Generic.Dictionary(of string, object))]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+    </If>
+    <Assign DisplayName="Determine if This is a leaf WB" sap2010:WorkflowViewState.IdRef="Assign_43">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Boolean">[wbIsLeaf]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Boolean">[if (in_ChildAudit.Count = 0, true, false)]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <If Condition="[in_wbType IsNot Nothing AndAlso&#xD;&#xA;in_wbLevel &gt; -1 AndAlso&#xD;&#xA;in_wbParent IsNot Nothing AndAlso&#xD;&#xA;(in_LogLevel.Trim.ToLower=&quot;trace&quot; Or in_LogLevel.Trim.ToLower=&quot;info&quot; Or in_LogLevel.Trim.ToLower=&quot;warn&quot; Or in_LogLevel.Trim.ToLower=&quot;error&quot; Or in_LogLevel.Trim.ToLower=&quot;fatal&quot;) AndAlso&#xD;&#xA;in_LogMessage IsNot Nothing AndAlso&#xD;&#xA;(in_wbHandleError.Trim.ToLower=&quot;rethrow&quot; Or in_wbHandleError.Trim.ToLower=&quot;failed&quot; Or in_wbHandleError.Trim.ToLower=&quot;softfail&quot;)]" DisplayName="Test all Config inputs" sap2010:WorkflowViewState.IdRef="If_16">
+      <If.Then>
+        <Assign DisplayName="Valid Config" sap2010:WorkflowViewState.IdRef="Assign_45">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("configError")]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Object">[False]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+      <If.Else>
+        <Assign DisplayName="Error in Config" sap2010:WorkflowViewState.IdRef="Assign_46">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("configError")]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:Object">[True]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Else>
+    </If>
+    <If sap2010:Annotation.AnnotationText="Determine the value of wbStatus depending on inputs in_wbStatusSuccessful and in_wbHandleError" Condition="[in_wbStatusSuccessful]" DisplayName="If the log is a successful one, wbStatus depends on weather children wb had errors or not" sap2010:WorkflowViewState.IdRef="If_9">
+      <If.Then>
+        <Sequence DisplayName="Manage Successful audit and wbStatus" sap2010:WorkflowViewState.IdRef="Sequence_26">
+          <If Condition="[wbIsLeaf]" DisplayName="If this is not a leaf scan the items of the child to determine wbStatus " sap2010:WorkflowViewState.IdRef="If_14">
+            <If.Then>
+              <Assign DisplayName="Set wbStatus to Successful" sap2010:WorkflowViewState.IdRef="Assign_38">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbStatus")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">["Successful"]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Then>
+            <If.Else>
+              <If sap2010:Annotation.AnnotationText="If children reported &quot;Failed&quot; or &quot;Finished with Exceptions&quot; then &quot;Finished with Exceptions&quot;, else &quot;Successful&quot;" Condition="[in_ChildAudit.Exists(Function(x) x.Item(&quot;wbStatus&quot;).ToString.Contains(&quot;Failed&quot;)) OR in_ChildAudit.Exists(Function(x) x.Item(&quot;wbStatus&quot;).ToString.Contains(&quot;Finished with Exceptions&quot;))]" DisplayName="If children reported no errors status" sap2010:WorkflowViewState.IdRef="If_8">
+                <If.Then>
+                  <Assign DisplayName="Some children returned exceptions" sap2010:WorkflowViewState.IdRef="Assign_44">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbStatus")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">["Finished with Exceptions"]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Then>
+                <If.Else>
+                  <Assign DisplayName="Status is successful, no child errors" sap2010:WorkflowViewState.IdRef="Assign_36">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbStatus")]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Object">["Successful"]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </If.Else>
+              </If>
+            </If.Else>
+          </If>
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <Sequence DisplayName="Manage Failed Audit and wbStatus" sap2010:WorkflowViewState.IdRef="Sequence_25">
+          <If sap2010:Annotation.AnnotationText="If the wb is logging in it's Catch section, it can be instructed by it's parent, through the wbHandleError flag, to &quot;Rethrow&quot; the exception, to &quot;Failed&quot; or to &quot;SoftFail&quot;. Both &quot;Failed&quot; and &quot;SoftFailed&quot; instructions mean do not rethrow. The difference between the two is &quot;SoftFail&quot; does not cause the parent to have a status of &quot;Finished with Exceptions&quot;. Thus, the parent can try to solve the child's problem in another manner that could be successful." Condition="[in_wbHandleError.Trim.ToLower = &quot;rethrow&quot; or in_wbHandleError.Trim.ToLower = &quot;failed&quot;]" DisplayName="If failed, with or without rethrow" sap2010:WorkflowViewState.IdRef="If_15">
+            <If.Then>
+              <Assign DisplayName="Status is &quot;Failed&quot;" sap2010:WorkflowViewState.IdRef="Assign_34">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbStatus")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">["Failed"]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Then>
+            <If.Else>
+              <Assign DisplayName="Status is &quot;SoftFail&quot;" sap2010:WorkflowViewState.IdRef="Assign_47">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbStatus")]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:Object">["SoftFail"]</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Else>
+          </If>
+        </Sequence>
+      </If.Else>
+    </If>
+    <If Condition="[Not(in_SuppressLogging) AndAlso &#xA;Not(convert.ToBoolean(wbAudit.Item(&quot;configError&quot;)))]" DisplayName="If not Suppressed and config is correct, log" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Sequence DisplayName="Log messages and add fields" sap2010:WorkflowViewState.IdRef="Sequence_22">
+          <ui:AddLogFields sap2010:Annotation.AnnotationText="Add Hierarchy Log Fields: &#xA;wbType&#xA;wbParent&#xA;wbLevel&#xA;&#xA;Add Execution Log Fields: &#xA;wbStart&#xA;wbDurationSec&#xA;wbDurationHrs&#xA;wbStatus&#xA;wbFinalExec&#xA;wbExceptionType&#xA;wbParentStart&#xA;wbHandleError &#xA;" DisplayName="Add wb Log Fields" sap2010:WorkflowViewState.IdRef="AddLogFields_13">
+            <ui:AddLogFields.Fields>
+              <InArgument x:TypeArguments="x:String" x:Key="wbType">[in_wbType]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbParent">[in_wbParent]</InArgument>
+              <InArgument x:TypeArguments="x:Int32" x:Key="wbLevel">[in_wbLevel]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbStart">[in_wbStart.ToString]</InArgument>
+              <InArgument x:TypeArguments="x:Double" x:Key="wbDurationSec">[now.Subtract(in_wbStart).TotalSeconds]</InArgument>
+              <InArgument x:TypeArguments="x:Double" x:Key="wbDurationHrs">[now.Subtract(in_wbStart).TotalHours]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbStatus">[wbAudit.Item("wbStatus").ToString]</InArgument>
+              <InArgument x:TypeArguments="x:Boolean" x:Key="wbFinalExec">[in_wbFinalExec]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbExceptionType">[in_wbExceptionType]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbParentStart">[in_wbParentStart.ToString]</InArgument>
+              <InArgument x:TypeArguments="x:String" x:Key="wbHandleError ">[in_wbHandleError]</InArgument>
+            </ui:AddLogFields.Fields>
+          </ui:AddLogFields>
+          <Switch x:TypeArguments="x:String" DisplayName="Log message in accordance with LogLevel value" Expression="[in_LogLevel.Trim.ToLower]" sap2010:WorkflowViewState.IdRef="Switch`1_3">
+            <Switch.Default>
+              <ui:LogMessage DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_19" Level="Info" Message="[in_LogMessage]" />
+            </Switch.Default>
+            <ui:LogMessage x:Key="trace" DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_20" Level="Trace" Message="[in_LogMessage]" />
+            <ui:LogMessage x:Key="info" DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_21" Level="Info" Message="[in_LogMessage]" />
+            <ui:LogMessage x:Key="warn" DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_22" Level="Warn" Message="[in_LogMessage]" />
+            <ui:LogMessage x:Key="error" DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_23" Level="Error" Message="[in_LogMessage]" />
+            <ui:LogMessage x:Key="fatal" DisplayName="Log Message" sap2010:WorkflowViewState.IdRef="LogMessage_24" Level="Fatal" Message="[in_LogMessage]" />
+          </Switch>
+        </Sequence>
+      </If.Then>
+    </If>
+    <If Condition="[not(wbIsLeaf)]" DisplayName="If child audit exists Add child audit to Parent Audit" sap2010:WorkflowViewState.IdRef="If_17">
+      <If.Then>
+        <Assign DisplayName="Add child audit to parent Audit" sap2010:WorkflowViewState.IdRef="Assign_48">
+          <Assign.To>
+            <OutArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[io_ParentAudit]</OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[io_ParentAudit.Concat(in_ChildAudit).ToList]</InArgument>
+          </Assign.Value>
+        </Assign>
+      </If.Then>
+    </If>
+    <Sequence DisplayName="Add duration Info" sap2010:WorkflowViewState.IdRef="Sequence_28">
+      <Assign DisplayName="Add Execution Duration Information" sap2010:WorkflowViewState.IdRef="Assign_41">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbDurationSec")]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Object">[now.Subtract(in_wbStart).TotalSeconds]</InArgument>
+        </Assign.Value>
+      </Assign>
+      <Assign DisplayName="Add Execution Duration Information" sap2010:WorkflowViewState.IdRef="Assign_42">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("wbDurationHrs")]</OutArgument>
+        </Assign.To>
+        <Assign.Value>
+          <InArgument x:TypeArguments="x:Object">[now.Subtract(in_wbStart).TotalHours]</InArgument>
+        </Assign.Value>
+      </Assign>
+    </Sequence>
+    <Assign DisplayName="Add Optional Information" sap2010:WorkflowViewState.IdRef="Assign_49">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Object">[wbAudit.Item("optionalInfo")]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Object">["No info"]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <InvokeMethod DisplayName="Finally Add our wbAudit to the parent list" sap2010:WorkflowViewState.IdRef="InvokeMethod_1" MethodName="Add">
+      <InvokeMethod.TargetObject>
+        <InArgument x:TypeArguments="scg:List(scg:Dictionary(x:String, x:Object))">[io_ParentAudit]</InArgument>
+      </InvokeMethod.TargetObject>
+      <InArgument x:TypeArguments="scg:Dictionary(x:String, x:Object)">[wbAudit]</InArgument>
+    </InvokeMethod>
+    <sads:DebugSymbol.Symbol>d2xDOlxVc2Vyc1xtaWhhaS5kdW5hcmVhbnVcR29vZ2xlIERyaXZlXFdvcmtzcGFjZVxVaVBhdGhcVGVtcGxhdGVzXFVpUGF0aF9SRUZyYW1ld29ya1xGcmFtZXdvcmtcd2JMb2dnaW5nLnhhbWxfAX4B4QEBBgGCAgGHAgEFAawCAbsCAQQBWwFeAQMB3gIB5gIBAlUDlAIOAgEBV05XrgYCAQJaBWUKAwGSAWYFbQ4DAY0BbgWDAQoCAXeEAQXHAQoCAVPIAQXmAQoCASbnAQXyAQoCAR/zAQWEAhACARaFAgWMAg4CARKNAgWSAhQCAQ1aE1owAwGTAVwJYxIDAZUBazFrXAMBkAFoMmg8AwGOAW4Tbs0EAgF4cAl3EgMBiQF6CYEBEgMBhQGEAZYBhAGvAQIBVIYBCasBFAIBY64BCcUBFAIBVsgBE8gBeQIBJ8oBCeQBFAIBKOcBE+cBJAIBIOkBCfABEgIBIvQBB/sBEAIBG/wBB4MCEAIBF4oCMIoCOwIBFYcCMYcCTwIBE48CVI8CZAIBEJECSJECUQIBDmFYYboBAwGYAV5ZXmkDAZYBdTR1OwMBjAFyNXJSAwGKAX80fzoDAYgBfDV8UgMBhgGHAQuqARACAWSvAQvEARACAVfLAQvZAR0CAT7aAQvjARQCASnuAVjuAYUBAgEl6wFZ6wFpAgEj+QEy+QFZAgEe9gEz9gFSAgEcgQIygQJXAgEa/gEz/gFSAgEYhwEZhwElAgFliQEPkAEYAgFzkwEPqAEUAgFnrwHIBK8BtQUCAVixAQ+4ARgCAV+7AQ/CARgCAVvTAUfTAWoCAVHXAU3XAV8CAU/OAUfOAVQCAU3NAUXNAVACAUvSAUzSAXECAUrQAUbQAVsCAUjWAUzWAWcCAUbUAUvUAVsCAUTRAUzRAXMCAUPPAUXPAVECAUHVAU7VAWICAT/aAXXaAZEBAgEq3gEN3gGeAQIBO98BDd8BnAECATjgAQ3gAZwBAgE14QEN4QGeAQIBMuIBDeIBngECAS/cAQ/cAZEBAgEsjgE6jgFIAgF2iwE7iwFVAgF0kwHYAZMBugMCAWiVAROcARwCAW+fAROmARwCAWu2ATq2AUQCAWKzATuzAVUCAWDAATrAAUYCAV69ATu9AVUCAVzeAYoB3gGbAQIBPN8BiAHfAZkBAgE54AGIAeABmQECATbhAYoB4QGbAQIBM+IBigHiAZsBAgEw3AF93AGOAQIBLZoBPpoBWgIBcpcBP5cBWQIBcKQBPqQBTAIBbqEBP6EBWQIBbA==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="Assign_40" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="509,208">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_43" sap:VirtualizedContainerService.HintSize="509,60" />
+      <sap2010:ViewStateData Id="Assign_45" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_16" sap:VirtualizedContainerService.HintSize="509,212" />
+      <sap2010:ViewStateData Id="Assign_38" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_44" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_36" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="509,250">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_14" sap:VirtualizedContainerService.HintSize="776,398" />
+      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="798,522">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_34" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_47" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_15" sap:VirtualizedContainerService.HintSize="509,310">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="531,434">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="509,123">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AddLogFields_13" sap:VirtualizedContainerService.HintSize="476,259">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="LogMessage_19" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="LogMessage_20" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="LogMessage_21" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="LogMessage_22" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="LogMessage_23" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="LogMessage_24" sap:VirtualizedContainerService.HintSize="314,91" />
+      <sap2010:ViewStateData Id="Switch`1_3" sap:VirtualizedContainerService.HintSize="476,363" />
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="498,786">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="509,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_48" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_17" sap:VirtualizedContainerService.HintSize="509,208" />
+      <sap2010:ViewStateData Id="Assign_41" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Assign_42" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="509,284">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_49" sap:VirtualizedContainerService.HintSize="509,60" />
+      <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="509,132" />
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="531,2304">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="wbTemplate_1" sap:VirtualizedContainerService.HintSize="571,2384" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>
